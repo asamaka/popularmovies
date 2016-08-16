@@ -10,8 +10,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 
@@ -35,9 +33,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             @Override
             public void onClick(View view) {
                 ImageView clickedImage = (ImageView) view;
-                int id = (Integer)clickedImage.getTag();
+                int id = (Integer) clickedImage.getTag();
                 Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("movieDetails",movies.get(id));
+                intent.putExtra("movieDetails", movies.get(id));
                 context.startActivity(intent);
             }
         });
