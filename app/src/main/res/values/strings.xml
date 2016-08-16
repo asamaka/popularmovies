@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="movie_title_year">%1$s (%2$d)</string>
+    <string name="sort_settings">Sort By</string>
+    <string name="sort_by_popular">Sort By Popularity</string>
+    <string name="sort_by_votes">Sort By Votes</string>
+    <string name="popularity_title">Popularity</string>
+    <string name="vote_average_title">Vote average</string>
+    <string name="movie_popularity_approx">%.2f</string>
+    <string name="movie_api_url">http://api.themoviedb.org/3/movie/popular?api_key=%s</string>
+</resources>
