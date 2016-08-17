@@ -33,8 +33,10 @@ public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.
             @Override
             public void onClick(View view) {
                 int trailerId = (Integer) view.getTag();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.youtube_video_url, trailers.get(trailerId).key)));
-                context.startActivity(Intent.createChooser(intent, "Complete action using"));
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(context.getString(R.string.youtube_video_url,
+                                trailers.get(trailerId).key)));
+                context.startActivity(intent);
             }
         });
         return new TrailerViewHolder(view);

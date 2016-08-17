@@ -83,6 +83,9 @@ public class FetchMovieDataAsync extends AsyncTask<Object, Void, String> {
                 if (!jsonObject.isNull("vote_average")) {
                     m.vote_average = jsonObject.getDouble("vote_average");
                 }
+                if (!jsonObject.isNull("vote_count")) {
+                    m.vote_count = jsonObject.getLong("vote_count");
+                }
                 if (!jsonObject.isNull("popularity")) {
                     m.popularity = jsonObject.getDouble("popularity");
                 }

@@ -21,19 +21,21 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.movide_detail_layout);
+        setContentView(R.layout.activity_detail);
         ImageView bg = (ImageView) this.findViewById(R.id.movie_detail_background);
         ImageView poster = (ImageView) this.findViewById(R.id.movie_detail_poster);
         TextView title = (TextView) this.findViewById((R.id.movie_detail_title));
+        TextView year = (TextView) this.findViewById((R.id.movie_detail_year));
         TextView overview = (TextView) this.findViewById((R.id.movie_detail_overview));
-        TextView popularity = (TextView) this.findViewById((R.id.movie_detail_popularity));
         TextView voteAvrg = (TextView) this.findViewById((R.id.movie_detail_vote_average));
+        TextView voteCnt = (TextView) this.findViewById((R.id.movie_detail_vote_count));
         RecyclerView trailerListView = (RecyclerView) this.findViewById(R.id.trailer_list);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             movie = (MovieData) extras.get("movieDetails");
-            title.setText(this.getString(R.string.movie_title_year, movie.title, movie.release_date.get(Calendar.YEAR)));
+            title.setText(movie.title);
+            year.setText(this.getString(R.string.movie_year, movie.release_date.get(Calendar.YEAR)));
             Picasso.with(this)
                     .load(movie.poster_url)
                     .into(poster);
@@ -41,8 +43,9 @@ public class DetailsActivity extends AppCompatActivity {
                     .load(movie.poster_url)
                     .into(bg);
             overview.setText(movie.overview);
-            popularity.setText(String.valueOf(this.getString(R.string.movie_popularity_approx, movie.popularity)));
-            voteAvrg.setText(String.valueOf(movie.vote_average));
+
+            voteAvrg.setText(this.getString(R.string.rating_approx,movie.vote_average));
+            voteCnt.setText(this.getString(R.string.vote_count,movie.vote_count));
             new FetchTrailerDataAsync().execute(this, movie);
 
             trailerListView.setLayoutManager(new LinearLayoutManager(this));
