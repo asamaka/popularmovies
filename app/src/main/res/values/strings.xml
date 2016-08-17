@@ -10,5 +10,8 @@
     <string name="movie_api_popular_url">http://api.themoviedb.org/3/movie/popular?api_key=%s</string>
     <string name="movie_api_top_rated_url">http://api.themoviedb.org/3/movie/top_rated?api_key=%s</string>
     <string name="poster_image_url">http://image.tmdb.org/t/p/w500/%s</string>
+    <string name="movie_api_videos_url">http://api.themoviedb.org/3/movie/%1$d/videos?api_key=%2$s</string>
+    <string name="youtube_thumbnail_url">http://img.youtube.com/vi/%s/0.jpg</string>
+    <string name="youtube_video_url">http://www.youtube.com/watch?v=%s</string>
 
 </resources>

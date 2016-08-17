@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class FetchDataAsync extends AsyncTask<Object, Void, String> {
+public class FetchMovieDataAsync extends AsyncTask<Object, Void, String> {
     private List<MovieData> movies;
     private Context context;
 
@@ -35,7 +35,6 @@ public class FetchDataAsync extends AsyncTask<Object, Void, String> {
                 Log.e("Failed to request data", "Unknown sort type");
                 return null;
             }
-            Log.d("Requesting", url.toString());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
@@ -72,6 +71,9 @@ public class FetchDataAsync extends AsyncTask<Object, Void, String> {
                 if (!jsonObject.isNull("poster_path")) {
                     m.poster_url = context.getString(R.string.poster_image_url, jsonObject.getString("poster_path"));
                 }
+                if (!jsonObject.isNull("id")) {
+                    m.id = jsonObject.getLong("id");
+                }
                 if (!jsonObject.isNull("title")) {
                     m.title = jsonObject.getString("title");
                 }
@@ -88,7 +90,6 @@ public class FetchDataAsync extends AsyncTask<Object, Void, String> {
                     m.release_date = Calendar.getInstance();
                     m.release_date.setTime(Date.valueOf(jsonObject.getString("release_date")));
                 }
-
                 movies.add(m);
             }
             ((MainActivity) context).updateMovies(movies);

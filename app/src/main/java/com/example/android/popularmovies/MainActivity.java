@@ -25,12 +25,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView rv = (RecyclerView) findViewById(R.id.all_movies_list);
-        rv.setHasFixedSize(false);
+
         rv.setLayoutManager(new GridLayoutManager(this, 4));
         movies = new ArrayList<>();
         rvAdapter = new MovieListAdapter(this, movies);
         rv.setAdapter(rvAdapter);
-        new FetchDataAsync().execute(this, SortBy.POPULARITY);
+        new FetchMovieDataAsync().execute(this, SortBy.POPULARITY);
     }
 
     /**
@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_by_popular_menu_item:
-                new FetchDataAsync().execute(this, SortBy.POPULARITY);
+                new FetchMovieDataAsync().execute(this, SortBy.POPULARITY);
                 return true;
             case R.id.sort_by_votes_menu_item:
-                new FetchDataAsync().execute(this, SortBy.RATING);
+                new FetchMovieDataAsync().execute(this, SortBy.RATING);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
