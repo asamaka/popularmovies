@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.android.popularmovies.DetailsActivity;
 import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.DetailsFragment;
 import com.example.android.popularmovies.data.MovieData;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.ReviewData;
@@ -25,13 +26,13 @@ import java.util.List;
 
 public class FetchReviewDataAsync extends AsyncTask<Object, Void, String> {
     private List<ReviewData> reviews;
-    private Context context;
+    private DetailsFragment context;
     private MovieData movie;
 
     @Override
     protected String doInBackground(Object[] objects) {
         try {
-            context = ((Context) objects[0]);
+            context = ((DetailsFragment) objects[0]);
             movie = ((MovieData) objects[1]);
             URL url = new URL(context.getString(R.string.movie_api_reviews_url, movie.id, BuildConfig.MOVIE_DB_API_KEY));
             ;
@@ -62,7 +63,7 @@ public class FetchReviewDataAsync extends AsyncTask<Object, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         if(result== null || result == ""){
-            Toast.makeText(context,R.string.offline_message,Toast.LENGTH_LONG).show();;
+            Toast.makeText(context.getActivity(),R.string.offline_message,Toast.LENGTH_LONG).show();;
             return;
         }
         reviews = new ArrayList<ReviewData>();
@@ -81,7 +82,7 @@ public class FetchReviewDataAsync extends AsyncTask<Object, Void, String> {
                 }
                 reviews.add(r);
             }
-            ((DetailsActivity) context).updateMovieReviews(reviews);
+            ((DetailsFragment) context).updateMovieReviews(reviews);
         } catch (Exception ex) {
             Log.e("Exception", ex.getMessage());
         }
