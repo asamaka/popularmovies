@@ -78,6 +78,17 @@ public class MainActivity extends AppCompatActivity {
             mCurrentSort = 0;
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(mCurrentSort==2){
+            //update favorites in case one has been removed
+            showFavorites();
+        }
+    }
+
+
     /**
      * Called when the FetchDataAsyncTask is complete
      *
