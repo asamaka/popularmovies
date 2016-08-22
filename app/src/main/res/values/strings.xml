@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopularMovies</string>
+    <string name="app_name">Popular Movies</string>
     <string name="movie_year">%d</string>
     <string name="sort_by_popular">Sort By Popularity</string>
     <string name="sort_by_votes">Sort By Ratings</string>
@@ -15,9 +15,13 @@
 
     <string name="vote_count">%,d</string>
     <string name="offline_message">Offline!</string>
-    <string name="add_to_favorite">Add to Fav</string>
+    <string name="add_to_favorite">Add to Favorite</string>
     <string name="fav_movies_preference_file_key">com.example.android.popularmovies.FAVORITE_MOVIES_FILE_KEY</string>
     <string name="sort_by_favorites">Sort By Favorites</string>
 
     <string name="content_authority">com.example.android.popularmovies.app</string>
+    <string name="title_detail_activity_display_message">Movie Details</string>
+    <string name="most_popular_title">Most Popular Movies</string>
+    <string name="top_rated_title">Top Rated Movies</string>
+    <string name="favorites_title">Favorite Movies</string>
 </resources>

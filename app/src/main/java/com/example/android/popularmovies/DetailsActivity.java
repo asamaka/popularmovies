@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +55,7 @@ public class DetailsActivity extends AppCompatActivity {
         TextView voteCnt = (TextView) this.findViewById((R.id.movie_detail_vote_count));
         RecyclerView trailerListView = (RecyclerView) this.findViewById(R.id.trailer_list);
         RecyclerView reviewListView = (RecyclerView) this.findViewById(R.id.review_list);
-
+        ImageButton addToFavorites = (ImageButton) this.findViewById(R.id.add_to_fav_button);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -80,6 +81,7 @@ public class DetailsActivity extends AppCompatActivity {
                 overview.setText(movie.overview);
                 voteAvrg.setText(this.getString(R.string.rating_approx, movie.vote_average));
                 voteCnt.setText(this.getString(R.string.vote_count, movie.vote_count));
+                refreshFavoriteIcon(addToFavorites);
                 new FetchTrailerDataAsync().execute(this, movie);
                 new FetchReviewDataAsync().execute(this, movie);
 
@@ -113,16 +115,29 @@ public class DetailsActivity extends AppCompatActivity {
 
     }
 
+    private boolean refreshFavoriteIcon(View view){
+        ContentResolver cr = getContentResolver();
+        Uri uri = FavoriteMoviesContract.MovieEntry.buildFavoriteMovieUri(movie.id);
+        Cursor existingMovies = cr.query(uri,null,null,null,null);
+        if (existingMovies.getCount()>0){
+            ((ImageButton)view).setBackgroundResource(android.R.drawable.btn_star_big_on);
+            return true;
+        }else{
+            ((ImageButton)view).setBackgroundResource(android.R.drawable.btn_star_big_off);
+            return false;
+        }
+
+    }
+
     public void onAddToFavClicked(View view) {
 
         ContentResolver cr = getContentResolver();
-
-        //check is already there
         Uri uri = FavoriteMoviesContract.MovieEntry.buildFavoriteMovieUri(movie.id);
-        Cursor existingMovies = cr.query(uri,null,null,null,null);
-        if(existingMovies.getCount()>0){
-            //remove from favorites
+
+        //if already favorite then delete
+        if(refreshFavoriteIcon(view)){
             cr.delete(uri,null,null);
+            refreshFavoriteIcon(view);
             return;
         }
 
@@ -136,6 +151,8 @@ public class DetailsActivity extends AppCompatActivity {
         cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_VOTE_COUNT, movie.vote_count);
         cv.put(FavoriteMoviesContract.MovieEntry.COLUMN_OVERVIEW, movie.overview);
         cr.insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI,cv);
+
+        refreshFavoriteIcon(view);
 
     }
 }

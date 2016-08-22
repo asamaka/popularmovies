@@ -2,7 +2,6 @@ package com.example.android.popularmovies;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,29 +12,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.android.popularmovies.data.FavoriteMoviesContract;
-import com.example.android.popularmovies.data.FavoriteMoviesProvider;
 import com.example.android.popularmovies.sync.FetchMovieDataAsync;
 import com.example.android.popularmovies.data.MovieData;
 import com.example.android.popularmovies.sync.MovieListAdapter;
-import com.example.android.popularmovies.R;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     private List<MovieData> movies;
     private MovieListAdapter rvAdapter;
     private Context context;
-
+    private int mCurrentSort;
+    static final String STATE_SORT = "current_sort";
     public enum SortBy {
-        POPULARITY, RATING
+        POPULARITY, RATING, FAVORITES;
     }
 
     @Override
@@ -49,10 +43,41 @@ public class MainActivity extends AppCompatActivity {
         movies = new ArrayList<>();
         rvAdapter = new MovieListAdapter(this, movies);
         rv.setAdapter(rvAdapter);
-        new FetchMovieDataAsync().execute(this, SortBy.POPULARITY);
+        if(savedInstanceState == null) {
+            new FetchMovieDataAsync().execute(this, SortBy.POPULARITY);
+            setTitle(getString(R.string.most_popular_title));
+            mCurrentSort = 0;
+        }
+
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current sorting state
+        savedInstanceState.putInt(STATE_SORT, mCurrentSort);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
 
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if(savedInstanceState.getInt(STATE_SORT)==1){
+            new FetchMovieDataAsync().execute(this, SortBy.RATING);
+            setTitle(getString(R.string.top_rated_title));
+            mCurrentSort = 1;
+        }
+        else if(savedInstanceState.getInt(STATE_SORT)==2){
+            showFavorites();
+            setTitle(getString(R.string.favorites_title));
+            mCurrentSort = 2;
+        }else{
+            new FetchMovieDataAsync().execute(this, SortBy.POPULARITY);
+            setTitle(getString(R.string.most_popular_title));
+            mCurrentSort = 0;
+        }
+    }
     /**
      * Called when the FetchDataAsyncTask is complete
      *
@@ -74,12 +99,18 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.sort_by_popular_menu_item:
                 new FetchMovieDataAsync().execute(this, SortBy.POPULARITY);
+                setTitle(getString(R.string.most_popular_title));
+                mCurrentSort = 0;
                 return true;
             case R.id.sort_by_votes_menu_item:
                 new FetchMovieDataAsync().execute(this, SortBy.RATING);
+                setTitle(getString(R.string.top_rated_title));
+                mCurrentSort = 1;
                 return true;
             case R.id.sort_by_favorites:
                 showFavorites();
+                setTitle(getString(R.string.favorites_title));
+                mCurrentSort = 2;
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
