@@ -9,4 +9,7 @@
         android:title="@string/sort_by_votes"
  />
 
+    <item android:id="@+id/sort_by_favorites"
+        android:title="@string/sort_by_favorites"
+        />
 </menu>

@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,5 +16,6 @@ public class MovieData implements Serializable {
     public double popularity;
     public Calendar release_date;
     public List<TrailerData> trailers = new ArrayList<>();
+    public List<ReviewData> reviews = new ArrayList<>();
 
 }

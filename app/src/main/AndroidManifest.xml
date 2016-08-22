@@ -17,6 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailsActivity"></activity>
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".data.FavoriteMoviesProvider"
+            android:exported="false"
+            android:syncable="true" />
     </application>
 
 </manifest>

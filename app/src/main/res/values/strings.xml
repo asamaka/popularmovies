@@ -9,9 +9,15 @@
     <string name="movie_api_top_rated_url">http://api.themoviedb.org/3/movie/top_rated?api_key=%s</string>
     <string name="poster_image_url">http://image.tmdb.org/t/p/w500/%s</string>
     <string name="movie_api_videos_url">http://api.themoviedb.org/3/movie/%1$d/videos?api_key=%2$s</string>
+    <string name="movie_api_reviews_url">http://api.themoviedb.org/3/movie/%1$d/reviews?api_key=%2$s</string>
     <string name="youtube_thumbnail_url">http://img.youtube.com/vi/%s/0.jpg</string>
     <string name="youtube_video_url">http://www.youtube.com/watch?v=%s</string>
-    <string name="vote_count">%,d</string>
-    <string name="overview_title">Overview:</string>
 
+    <string name="vote_count">%,d</string>
+    <string name="offline_message">Offline!</string>
+    <string name="add_to_favorite">Add to Fav</string>
+    <string name="fav_movies_preference_file_key">com.example.android.popularmovies.FAVORITE_MOVIES_FILE_KEY</string>
+    <string name="sort_by_favorites">Sort By Favorites</string>
+
+    <string name="content_authority">com.example.android.popularmovies.app</string>
 </resources>

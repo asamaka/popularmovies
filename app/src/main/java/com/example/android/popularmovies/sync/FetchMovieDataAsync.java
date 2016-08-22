@@ -1,8 +1,14 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.android.popularmovies.MainActivity;
+import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.data.MovieData;
+import com.example.android.popularmovies.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,8 +30,8 @@ public class FetchMovieDataAsync extends AsyncTask<Object, Void, String> {
 
     @Override
     protected String doInBackground(Object[] objects) {
+        context = ((Context) objects[0]);
         try {
-            context = ((Context) objects[0]);
             URL url;
             if (objects[1] == MainActivity.SortBy.POPULARITY) {
                 url = new URL(context.getString(R.string.movie_api_popular_url, BuildConfig.MOVIE_DB_API_KEY));
@@ -54,14 +60,19 @@ public class FetchMovieDataAsync extends AsyncTask<Object, Void, String> {
 
         } catch (Exception ex) {
             Log.e("Exception", ex.getMessage());
+            //((MainActivity) context).showOfflineMessage();
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(String result) {
-        movies = new ArrayList<MovieData>();
+        if(result== null || result == ""){
+            Toast.makeText(context,R.string.offline_message,Toast.LENGTH_LONG).show();;
+            return;
+        }
         try {
+            movies = new ArrayList<MovieData>();
             JSONObject json = new JSONObject(result);
             JSONArray results = json.getJSONArray("results");
 
@@ -96,11 +107,8 @@ public class FetchMovieDataAsync extends AsyncTask<Object, Void, String> {
                 movies.add(m);
             }
             ((MainActivity) context).updateMovies(movies);
-
         } catch (Exception ex) {
             Log.e("Exception", ex.getMessage());
         }
-
-
     }
 }

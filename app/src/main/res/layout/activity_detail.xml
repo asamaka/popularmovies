@@ -34,10 +34,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/movie_detail_year"
             android:gravity="center"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large.Inverse"
             android:textStyle="bold"
+            android:text="YYYY"
             android:background="@color/colorAccent"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,45 +57,61 @@
 
 
         </LinearLayout>
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/star"
-                android:layout_gravity="center"
-
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:orientation="vertical"
-                android:layout_gravity="center"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/movie_detail_vote_average"
-                    android:gravity="center"
-                    android:textSize="36sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginBottom="-8dp"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/movie_detail_vote_count"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/star"
+                    android:layout_gravity="center"
 
                     />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:orientation="vertical"
+                    android:layout_gravity="center"
+                    >
 
-        </FrameLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/movie_detail_vote_average"
+                        android:gravity="center"
+                        android:textSize="36sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="0.0"
+                        android:layout_marginBottom="-8dp"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/movie_detail_vote_count"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="xx,xxx"
+                        android:textStyle="bold"
+
+                        />
+                </LinearLayout>
+
+            </FrameLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_to_favorite"
+                android:id="@+id/add_to_fav_button"
+                android:onClick="onAddToFavClicked"/>
+        </LinearLayout>
+
 
 
         <TextView
@@ -109,6 +128,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/trailer_list">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/review_list">
 
         </android.support.v7.widget.RecyclerView>
 

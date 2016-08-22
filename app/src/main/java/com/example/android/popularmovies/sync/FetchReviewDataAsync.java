@@ -1,8 +1,15 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.android.popularmovies.DetailsActivity;
+import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.data.MovieData;
+import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.data.ReviewData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FetchTrailerDataAsync extends AsyncTask<Object, Void, String> {
-    private List<TrailerData> trailers;
+public class FetchReviewDataAsync extends AsyncTask<Object, Void, String> {
+    private List<ReviewData> reviews;
     private Context context;
     private MovieData movie;
 
@@ -26,7 +33,7 @@ public class FetchTrailerDataAsync extends AsyncTask<Object, Void, String> {
         try {
             context = ((Context) objects[0]);
             movie = ((MovieData) objects[1]);
-            URL url = new URL(context.getString(R.string.movie_api_videos_url, movie.id, BuildConfig.MOVIE_DB_API_KEY));
+            URL url = new URL(context.getString(R.string.movie_api_reviews_url, movie.id, BuildConfig.MOVIE_DB_API_KEY));
             ;
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -54,24 +61,27 @@ public class FetchTrailerDataAsync extends AsyncTask<Object, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        trailers = new ArrayList<TrailerData>();
+        if(result== null || result == ""){
+            Toast.makeText(context,R.string.offline_message,Toast.LENGTH_LONG).show();;
+            return;
+        }
+        reviews = new ArrayList<ReviewData>();
         try {
             JSONObject json = new JSONObject(result);
             JSONArray results = json.getJSONArray("results");
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject jsonObject = results.getJSONObject(i);
-                TrailerData t = new TrailerData();
-                if (!jsonObject.isNull("key")) {
-                    t.key = jsonObject.getString("key");
+                ReviewData r = new ReviewData();
+                if (!jsonObject.isNull("author")) {
+                    r.author = jsonObject.getString("author");
                 }
-                if (!jsonObject.isNull("name")) {
-                    t.name = jsonObject.getString("name");
+                if (!jsonObject.isNull("content")) {
+                    r.content = jsonObject.getString("content");
                 }
-                trailers.add(t);
+                reviews.add(r);
             }
-            ((DetailsActivity) context).updateMovieTrailers(trailers);
-
+            ((DetailsActivity) context).updateMovieReviews(reviews);
         } catch (Exception ex) {
             Log.e("Exception", ex.getMessage());
         }
