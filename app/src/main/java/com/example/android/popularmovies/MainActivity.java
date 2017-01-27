@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,12 +23,16 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    
     private List<MovieData> movies;
     private MovieListAdapter rvAdapter;
     private Context context;
     private int mCurrentSort;
-    static final String STATE_SORT = "current_sort";
+    private static final String STATE_SORT = "current_sort";
+    private static final String STATE_GRID = "current_grid_position";
+    private GridLayoutManager mLayoutManager;
+    private Parcelable mGridState;
+
     public enum SortBy {
         POPULARITY, RATING, FAVORITES;
     }
@@ -38,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
         RecyclerView rv = (RecyclerView) findViewById(R.id.all_movies_list);
-
-        rv.setLayoutManager(new GridLayoutManager(this, 4));
+        mLayoutManager = new GridLayoutManager(this, 4);
+        rv.setLayoutManager(mLayoutManager);
         movies = new ArrayList<>();
         rvAdapter = new MovieListAdapter(this, movies);
         rv.setAdapter(rvAdapter);
@@ -55,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the user's current sorting state
         savedInstanceState.putInt(STATE_SORT, mCurrentSort);
+        // Save list state
+        mGridState = mLayoutManager.onSaveInstanceState();
+        savedInstanceState.putParcelable(STATE_GRID, mGridState);
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -62,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can restore the view hierarchy
         super.onRestoreInstanceState(savedInstanceState);
+
+        if(savedInstanceState == null) return;
 
         if(savedInstanceState.getInt(STATE_SORT)==1){
             new FetchMovieDataAsync().execute(this, SortBy.RATING);
@@ -77,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
             setTitle(getString(R.string.most_popular_title));
             mCurrentSort = 0;
         }
+
+        mGridState = savedInstanceState.getParcelable(STATE_GRID);
+
     }
 
     @Override
@@ -97,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
     public void updateMovies(List<MovieData> m) {
         movies.clear();
         movies.addAll(m);
+        if (mGridState != null) {
+            mLayoutManager.onRestoreInstanceState(mGridState);
+        }
         rvAdapter.notifyDataSetChanged();
     }
 
